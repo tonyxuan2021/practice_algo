@@ -1,19 +1,29 @@
-// recursion
-// T: O(n) because we touch every node once and perf constant calc on each
-// S: O(logn) this is the height of our binary tree 
+// Iterative solution
+// T: O(n)
+// S: O(n) for the queue space
 class Solution {
     public boolean isSymmetric(TreeNode root) {
-        if(root == null) return true; 
-        return isSymmetric(root.left, root.right);
-    }
-    
-    private boolean isSymmetric(TreeNode left, TreeNode right){
-        // base case: check if both are null
-        if(left == null || right == null) return left == right;
-        // base case: check if left and right values are the same
-        if(left.val != right.val) return false;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        q.add(root);
         
-        // recursion 
-        return isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
+        while(!q.isEmpty()){
+            // pop off the two nodes
+            TreeNode t1 = q.poll();
+            TreeNode t2 = q.poll();
+            
+            // if both are null, continue
+            if(t1 == null && t2 == null) continue;
+            // if only one of them is null, return false
+            if(t1 == null || t2 == null) return false;
+            if(t1.val != t2.val) return false;
+            
+            q.add(t1.left);
+            q.add(t2.right);
+            
+            q.add(t1.right);
+            q.add(t2.left);
+        }
+        return true;
     }
 }
