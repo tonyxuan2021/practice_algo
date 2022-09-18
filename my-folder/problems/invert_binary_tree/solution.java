@@ -1,22 +1,15 @@
-// T: O(n) - have to op on every node
-// S: O(n) - leaf node has n/2 for our largest queue space 
+// Recursive solution
+// T: O(n) - we perf constant op on every node
+// S: O(n) - stack space used, O(n) if binary tree is completely imbalanced, O(logn) if binary tree is completely balanced
 class Solution {
     public TreeNode invertTree(TreeNode root) {
         if(root == null) return null;
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
         
-        while(!queue.isEmpty()){
-            TreeNode currNode = queue.poll();
-            // first identify leftsub so we do not switch back and forth and return back to original
-            TreeNode leftsub = currNode.left;
-            
-            currNode.left = currNode.right;
-            currNode.right = leftsub;
-            
-            if(currNode.left != null) queue.add(currNode.left);
-            if(currNode.right != null) queue.add(currNode.right);
-        }
+        TreeNode leftsub = invertTree(root.left);
+        TreeNode rightsub = invertTree(root.right);
+        
+        root.left = rightsub;
+        root.right = leftsub;
         
         return root;
     }
