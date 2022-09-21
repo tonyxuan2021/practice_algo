@@ -1,24 +1,24 @@
+// Recursive solution
+// T: O(n) - we need to perform constant calc in every node
+// S: O(n) - worst case is if binary tree is skewed on our recursion stack
 class Solution {
-    // variable to keep track of our binary tree is balanced
-    private boolean balancedBool = true;
+    boolean balanced = true;
     
     public boolean isBalanced(TreeNode root) {
         getHeight(root);
-        return balancedBool;
+        return balanced;
     }
     
     private int getHeight(TreeNode node){
         // base case
         if(node == null) return -1;
         
-        // recursively go down our tree (to the leaf nodes and beyond)
-        int leftSub = getHeight(node.left);
-        int rightSub = getHeight(node.right);
+        // recursively go down to the leaf node
+        int leftHeight = getHeight(node.left);
+        int rightHeight = getHeight(node.right);
         
-        // check if node is balanced
-        if(Math.abs(leftSub - rightSub) > 1) balancedBool = false;
+        if(Math.abs(leftHeight - rightHeight) > 1) balanced = false;
         
-        return Math.max(leftSub, rightSub) +1;
-        
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 }
