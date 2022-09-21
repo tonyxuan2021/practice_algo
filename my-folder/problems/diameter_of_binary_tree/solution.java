@@ -1,18 +1,23 @@
+// Recursive solution
+// T: O(n) - worst case we need to visit every node
+// S: O(n) - worst case our stack space requires hitting every node if tree is skewed
 class Solution {
-    private int longestDiameter = 0;
+    int maxL = 0;
     
     public int diameterOfBinaryTree(TreeNode root) {
         getDiameter(root);
-        return longestDiameter;
+        return maxL;
     }
     
-    private int getDiameter(TreeNode node){
-        if(node == null) return 0;
+    private int getDiameter(TreeNode root){
+        // base case
+        if(root == null) return 0;
         
-        int leftD = getDiameter(node.left);
-        int rightD = getDiameter(node.right);
+        // recursively call down to leaf nodes
+        int leftD = getDiameter(root.left);
+        int rightD = getDiameter(root.right);
         
-        longestDiameter = Math.max(longestDiameter, leftD + rightD);
+        maxL = Math.max(maxL, leftD + rightD);
         
         return Math.max(leftD, rightD) + 1;
     }
