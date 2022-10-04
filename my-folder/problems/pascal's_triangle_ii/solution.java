@@ -1,32 +1,30 @@
-// Approach 2: DP
-// T: O(k^2) - calculating a row requires calc all prev rows as well 
-// S: O(k) - saving space keeping only the latest generated row, we only need O(k) extra space other than the O(k) required to store the output
-// keep only the latest row generated and use that to generate a new row
+// Approach 3: Memory-efficient DP
+// T: O(k^2) - same as previous DP approach
+// O: O(k) - no extra space is used other than required to hold the output
+// pascal[i][j] = pascal[i-1][j-1] + pascal[i-1][j]
+// WRITE pascal[i][j] (after generating from pascal[i-1][j-1] + pascal[i-1][j])
+// READ pascal[i][j] to generate pascal[i+1][j]
+// READ pascal[i][j] to generate pascal[i+1][j+1]
+
+// once we get pascal[i][j] we don't need to modify it and its only read twice (DP)
+
+// If we manage to keep all read accesses on prev row of pascal[j], before any write access to pascal[j] for the curr row value, we should be good. That's possible by evaluating each row from the END (instead of the beginning). Otherwise you'll update twice and get incorrect sum.
+// new role value of pascal[j+1] must be generated before pascal[j]
+
 class Solution {
-  public List<Integer> getRow(int rowIndex) {
-    List<Integer> curr;
-    List<Integer> prev = new ArrayList<>(); 
-    prev.add(1);  
-
-    // outer loop for row
-    for(int i = 1; i <= rowIndex; i++){
-        // create a new ArrayList with a size 1 bigger 
-        curr = new ArrayList<>(i + 1); 
-        // add 1 to the beg 
-        curr.add(1);
-
-        // inner loop for filling the col (except first and last elem (which is 1))
-        for(int j = 1; j < i; j++){
-            curr.add(prev.get(j - 1) + prev.get(j));
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<>();
+        row.add(1);
+        
+        for(int i = 0; i < rowIndex; i++){
+            // evaluate from the end instead of the front
+            for(int j = i; j > 0; j--){
+                row.set(j, row.get(j) + row.get(j - 1));
+            }
+            
+            row.add(1);
         }
-
-        // add 1 to the end
-        curr.add(1);
-
-        // update prev to be curr
-        prev = curr;
+        
+        return row;
     }
-
-    return prev;
-  }
 }
