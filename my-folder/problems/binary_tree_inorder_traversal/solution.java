@@ -1,22 +1,23 @@
+// Recursive solution
+// T: O(n) - we need to visit each node once
+// S: O(n) - worst case the tree is skewed so we need O(n) stack space
 class Solution {
-    // iterative solution with stack DS
     public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> inList = new LinkedList<>();
-        if(root == null) return inList;
+        List<Integer> result = new ArrayList<>();
+        inorderHelper(root, result);
+        return result;
+    }
+    
+    // helper fx
+    private void inorderHelper(TreeNode node, List<Integer> result){
+        // recursion
+        // base case:
+        if(node == null) return;
         
-        Deque<TreeNode> stack = new LinkedList<>();
-        
-        TreeNode curr = root;
-        
-        while(curr != null || !stack.isEmpty()){
-            while(curr != null){
-                stack.push(curr);
-                curr = curr.left;
-            }
-            curr = stack.pop();
-            inList.add(curr.val);
-            curr = curr.right;
-        }
-        return inList;
+        // inorder -> left, root, right
+        // left:
+        inorderHelper(node.left, result);
+        result.add(node.val);
+        inorderHelper(node.right, result);    
     }
 }
