@@ -1,30 +1,30 @@
-// Iterative solution - BFS
+
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> levels = new ArrayList<List<Integer>>();
         if(root == null) return levels;
         
-        // use Queue interface for BFS
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         
-        int level = 0; // start at level 0
-
+        int level = 0; // initialize level at 0
+        
         while(!queue.isEmpty()){
-            // create new level inside levels
+            // create a new level each time we exist inner for-loop
             levels.add(new ArrayList<Integer>());
             
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                TreeNode currNode = queue.poll();
-                levels.get(level).add(currNode.val);
-                
-                if(currNode.left != null) queue.add(currNode.left);
-                if(currNode.right != null) queue.add(currNode.right);
-            }
+            int length = queue.size();
             
+            for(int i = 0; i < length; i++){
+                TreeNode node = queue.poll();
+                levels.get(level).add(node.val);
+                
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
             level++;
         }
+        
         
         return levels;
     }
