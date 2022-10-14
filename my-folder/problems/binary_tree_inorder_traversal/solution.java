@@ -1,23 +1,25 @@
-// Recursive solution
-// T: O(n) - we need to visit each node once
-// S: O(n) - worst case the tree is skewed so we need O(n) stack space
+// inorder => left, root, right
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        inorderHelper(root, result);
-        return result;
-    }
-    
-    // helper fx
-    private void inorderHelper(TreeNode node, List<Integer> result){
-        // recursion
-        // base case:
-        if(node == null) return;
+        List<Integer> result = new LinkedList<>();
+        if(root == null) return result;
         
-        // inorder -> left, root, right
-        // left:
-        inorderHelper(node.left, result);
-        result.add(node.val);
-        inorderHelper(node.right, result);    
+        Deque<TreeNode> stack = new LinkedList<>();
+        
+        while(root != null || !stack.isEmpty()){
+            // we traverse all the way to the left
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            
+            // when we reached the very left node in our binary tree
+            root = stack.pop();
+            result.add(root.val); // result adds left, root -> now we are just missing right
+            root = root.right;
+        }
+        
+        
+        return result;
     }
 }
