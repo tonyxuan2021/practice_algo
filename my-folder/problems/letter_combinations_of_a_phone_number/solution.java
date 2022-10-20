@@ -1,3 +1,5 @@
+// T: O(4^n * n) => n is length of digits, 4 is max value length in HASHMAP (not length of input)
+// S: O(n) - where n is length of digits -> recursion call stack 
 class Solution {
     private List<String> combinations = new ArrayList<>();
     private Map<Character, String> letters = Map.of(
@@ -19,25 +21,32 @@ class Solution {
         // initiate backtracking with empty path and starting index 0
         phoneDigits = digits;
         backtrack(0, new StringBuilder());
+        
         return combinations;
     }
     
+    // use backtracking to generate all possible combinations
+    // takes 2 input: index - we are checking, path - current combination of letters
     private void backtrack(int index, StringBuilder path){
-        // if path is same length as digits, we have complete combination
+        // base case: if path is same length as digits, we have complete combination
         if(path.length() == phoneDigits.length()){
+            // path StringBuilder and convert it to String and add it to our combinations List<String>
             combinations.add(path.toString());
-            return; // backtrack
+            // backtrack
+            return; 
         }
         
-        // get the letters that the current digit maps to and loop through them
-        String possibleLetters = letters.get(phoneDigits.charAt(index));
+        // otherwise: get all the letters that correspond with the current digit maps to and loop through them
+        String possibleLetters = letters.get(phoneDigits.charAt(index)); // **not 100% sure about this
+        
+        // loop through possibleLetters
         for(char letter : possibleLetters.toCharArray()){
             // add letter to curr path
             path.append(letter);
-            // move to next digit
+            // call backtrack again but move onto the next digit by incrementing index + 1
             backtrack(index + 1, path);
             // backtrack by removing letter before moving to next
-            path.deleteCharAt(path.length() -1);
+            path.deleteCharAt(path.length() - 1);
         }
     }
 }
